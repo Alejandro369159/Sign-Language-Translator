@@ -16,17 +16,15 @@ Author: Sufiyaan Nadeem
 */
 
 // Importing the k-Nearest Neighbors Algorithm
-import {
-  KNNImageClassifier
-} from 'deeplearn-knn-image-classifier';
-import * as dl from 'deeplearn';
+import { KNNImageClassifier } from "deeplearn-knn-image-classifier";
+import * as dl from "deeplearn";
 
 // Webcam Image size. Must be 227.
 const IMAGE_SIZE = 227;
 // K value for KNN. 10 means that we will take votes from 10 data points to classify each tensor.
 const TOPK = 10;
 // Percent confidence above which prediction needs to be to return a prediction.
-const confidenceThreshold = 0.98
+const confidenceThreshold = 0.98;
 
 // Initial Gestures that need to be trained.
 // The start gesture is for signalling when to start prediction
@@ -68,15 +66,15 @@ class Main {
     this.proceedBtn.style.display = "block";
     this.proceedBtn.classList.add("animated");
     this.proceedBtn.classList.add("flash");
-    this.proceedBtn.addEventListener('click', () => {
+    this.proceedBtn.addEventListener("click", () => {
       this.welcomeContainer.classList.add("slideOutUp");
-    })
+    });
 
     this.stageTitle = document.getElementById("stage");
     this.stageInstruction = document.getElementById("steps");
     this.predButton = document.getElementById("predictButton");
     this.backToTrainButton = document.getElementById("backButton");
-    this.nextButton = document.getElementById('nextButton');
+    this.nextButton = document.getElementById("nextButton");
 
     this.statusContainer = document.getElementById("status");
     this.statusText = document.getElementById("status-text");
@@ -85,7 +83,9 @@ class Main {
     this.translationText = document.getElementById("translationText");
     this.translatedCard = document.getElementById("translatedCard");
 
-    this.initialTrainingHolder = document.getElementById('initialTrainingHolder');
+    this.initialTrainingHolder = document.getElementById(
+      "initialTrainingHolder"
+    );
 
     this.videoContainer = document.getElementById("videoHolder");
     this.video = document.getElementById("video");
@@ -120,37 +120,46 @@ class Main {
 
   //This function sets up the webcam
   startWebcam() {
-    navigator.mediaDevices.getUserMedia({
+    navigator.mediaDevices
+      .getUserMedia({
         video: {
-          facingMode: 'user'
+          facingMode: "user",
         },
-        audio: false
+        audio: false,
       })
       .then((stream) => {
         this.video.srcObject = stream;
         this.video.width = IMAGE_SIZE;
         this.video.height = IMAGE_SIZE;
-        this.video.addEventListener('playing', () => this.videoPlaying = true);
-        this.video.addEventListener('paused', () => this.videoPlaying = false);
-      })
+        this.video.addEventListener(
+          "playing",
+          () => (this.videoPlaying = true)
+        );
+        this.video.addEventListener(
+          "paused",
+          () => (this.videoPlaying = false)
+        );
+      });
   }
 
   /*This function initializes the training for Start and Stop Gestures. It also 
   sets a click listener for the next button.*/
   initialTraining() {
     // if next button on initial training page is pressed, setup the custom gesture training UI.
-    this.nextButton.addEventListener('click', () => {
+    this.nextButton.addEventListener("click", () => {
       const exampleCount = this.knn.getClassExampleCount();
       if (Math.max(...exampleCount) > 0) {
         // if start gesture has not been trained
         if (exampleCount[0] == 0) {
-          alert('No has añadido ejemplos para el gesto de inicio');
+          alert("No has añadido ejemplos para el gesto de inicio");
           return;
         }
 
         // if stop gesture has not been trained
         if (exampleCount[1] == 0) {
-          alert('No has agregado ejemplos para el gesto de detenerse.\n\nCaptúrate a ti mismo en estados inactivos, por ejemplo, con las manos a los costados, fondo vacío, etc..');
+          alert(
+            "No has agregado ejemplos para el gesto de detenerse.\n\nCaptúrate a ti mismo en estados inactivos, por ejemplo, con las manos a los costados, fondo vacío, etc.."
+          );
           return;
         }
 
@@ -183,13 +192,13 @@ class Main {
     var trainBtn = document.getElementById(btnType);
 
     // Call training function for this gesture on click
-    trainBtn.addEventListener('click', () => {
+    trainBtn.addEventListener("click", () => {
       this.train(i);
     });
 
     // Clear button to remove training examples on click
-    var clearBtn = document.getElementById('clear_' + btnType);
-    clearBtn.addEventListener('click', () => {
+    var clearBtn = document.getElementById("clear_" + btnType);
+    clearBtn.addEventListener("click", () => {
       this.knn.clearClass(i);
       this.exampleCountDisplay[i].innerText = " 0 examples";
       this.gestureCards[i].removeChild(this.gestureCards[i].childNodes[1]);
@@ -197,8 +206,8 @@ class Main {
     });
 
     // Variables for training information for the user
-    var exampleCountDisplay = document.getElementById('counter_' + btnType);
-    var checkMark = document.getElementById('checkmark_' + btnType);
+    var exampleCountDisplay = document.getElementById("counter_" + btnType);
+    var checkMark = document.getElementById("checkmark_" + btnType);
 
     // Create Gesture Card
     var gestureCard = document.createElement("div");
@@ -216,7 +225,7 @@ class Main {
     this.trainedCardsHolder.appendChild(gestureCard);
 
     exampleCountDisplay.innerText = " 0 examples";
-    checkMark.src = 'Images\\cargando.gif';
+    checkMark.src = "Images\\cargando.gif";
     this.exampleCountDisplay.push(exampleCountDisplay);
     this.checkMarks.push(checkMark);
     this.gestureCards.push(gestureCard);
@@ -229,13 +238,15 @@ class Main {
     if (Math.max(...exampleCount) > 0) {
       // if start gesture has not been trained
       if (exampleCount[0] == 0) {
-        alert('No has añadido ejemplos para la palabra de activación.');
+        alert("No has añadido ejemplos para la palabra de activación.");
         return;
       }
 
       // if stop gesture has not been trained
       if (exampleCount[1] == 0) {
-        alert('No has agregado ejemplos para el gesto de detenerse.\n\nCaptúrate a ti mismo en estados inactivos, por ejemplo, con las manos a los costados, fondo vacío, etc.');
+        alert(
+          "No has agregado ejemplos para el gesto de detenerse.\n\nCaptúrate a ti mismo en estados inactivos, por ejemplo, con las manos a los costados, fondo vacío, etc."
+        );
         return;
       }
 
@@ -247,7 +258,7 @@ class Main {
       this.trainedCardsHolder.style.display = "block";
 
       // Add Gesture on Submission of new gesture form
-      this.addWordForm.addEventListener('submit', (e) => {
+      this.addWordForm.addEventListener("submit", (e) => {
         this.trainingCommands.innerHTML = "";
 
         e.preventDefault(); // preventing default submission action
@@ -260,7 +271,7 @@ class Main {
 
           // Create train and clear buttons for new gesture and set reset form
           this.createTrainingBtns(words.indexOf(word));
-          this.newWordInput.value = '';
+          this.newWordInput.value = "";
 
           // Increase the amount of classes and array length in the kNN model
           this.knn.numClasses += 1;
@@ -276,43 +287,46 @@ class Main {
         return;
       });
     } else {
-      alert('Aún no has agregado ningún ejemplo.\n\nAgrega un gesto y luego realiza la señal frente a la cámara web.');
+      alert(
+        "Aún no has agregado ningún ejemplo.\n\nAgrega un gesto y luego realiza la señal frente a la cámara web."
+      );
     }
   }
 
   /*This creates the training and clear buttons for the new gesture. It also creates the 
     Gesture Card.*/
-  createTrainingBtns(i) { //i is the index of the new word
+  createTrainingBtns(i) {
+    //i is the index of the new word
     // Create Train and Clear Buttons
-    var trainBtn = document.createElement('button');
+    var trainBtn = document.createElement("button");
     trainBtn.className = "trainBtn";
     trainBtn.innerText = "Train";
     this.trainingCommands.appendChild(trainBtn);
 
-    var clearBtn = document.createElement('button');
+    var clearBtn = document.createElement("button");
     clearBtn.className = "clearButton";
     clearBtn.innerText = "Clear";
     this.trainingCommands.appendChild(clearBtn);
 
     // Change training class from none to specified class if training button is pressed
-    trainBtn.addEventListener('mousedown', () => {
+    trainBtn.addEventListener("mousedown", () => {
       this.train(i);
     });
 
     // Create clear button to remove training examples on click
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener("click", () => {
       this.knn.clearClass(i);
       this.exampleCountDisplay[i].innerText = " 0 examples";
       this.gestureCards[i].removeChild(this.gestureCards[i].childNodes[1]);
-      this.checkMarks[i].src = 'Images\\cargando.gif';
+      this.checkMarks[i].src = "Images\\cargando.gif";
     });
 
     // Create elements to display training information for the user
-    var exampleCountDisplay = document.createElement('h3');
+    var exampleCountDisplay = document.createElement("h3");
     exampleCountDisplay.style.color = "black";
     this.trainingCommands.appendChild(exampleCountDisplay);
 
-    var checkMark = document.createElement('img');
+    var checkMark = document.createElement("img");
     checkMark.className = "checkMark";
     this.trainingCommands.appendChild(checkMark);
 
@@ -327,16 +341,20 @@ class Main {
     this.trainedCardsHolder.appendChild(gestureCard);
 
     exampleCountDisplay.innerText = " 0 examples";
-    checkMark.src = 'Images\\cargando.gif';
+    checkMark.src = "Images\\cargando.gif";
     this.exampleCountDisplay.push(exampleCountDisplay);
     this.checkMarks.push(checkMark);
     this.gestureCards.push(gestureCard);
 
     // Retrain/Continue Training gesture on click of the gesture card
-    gestureCard.addEventListener('click', () => { //create btn
+    gestureCard.addEventListener("click", () => {
+      //create btn
       /* If gesture card was not already pressed display the specific gesture card's
       training buttons to train it*/
-      if (gestureCard.style.marginTop == "17px" || gestureCard.style.marginTop == "") {
+      if (
+        gestureCard.style.marginTop == "17px" ||
+        gestureCard.style.marginTop == ""
+      ) {
         this.addWordForm.style.display = "none";
         this.addGestureTitle.innerText = gestName;
         this.plusImage.src = "Images/retrain.svg";
@@ -366,7 +384,7 @@ class Main {
     });
 
     // if done retrain button is pressed again, change the add gesture card back to add gesture mode instead of retrain mode
-    this.doneRetrain.addEventListener('click', () => {
+    this.doneRetrain.addEventListener("click", () => {
       this.addGestureTitle.innerText = "Add Gesture";
       this.addWordForm.style.display = "block";
       gestureCard.style.marginTop = "17px";
@@ -387,11 +405,13 @@ class Main {
     var promise = this.video.play();
 
     if (promise !== undefined) {
-      promise.then(_ => {
-        console.log("Autoplay started")
-      }).catch(error => {
-        console.log("Autoplay prevented")
-      })
+      promise
+        .then((_) => {
+          console.log("Autoplay started");
+        })
+        .catch((error) => {
+          console.log("Autoplay prevented");
+        });
     }
   }
 
@@ -411,17 +431,21 @@ class Main {
 
       if (exampleCount > 0) {
         //if example count for this particular gesture is more than 0, update it
-        this.exampleCountDisplay[gestureIndex].innerText = ' ' + exampleCount + ' examples';
+        this.exampleCountDisplay[gestureIndex].innerText =
+          " " + exampleCount + " examples";
 
         //if example count for this particular gesture is 1, add a capture of the gesture to gesture cards
-        if (exampleCount == 1 && this.gestureCards[gestureIndex].childNodes[1] == null) {
+        if (
+          exampleCount == 1 &&
+          this.gestureCards[gestureIndex].childNodes[1] == null
+        ) {
           var gestureImg = document.createElement("canvas");
           gestureImg.className = "trained_image";
-          gestureImg.getContext('2d').drawImage(video, 0, 0, 400, 180);
+          gestureImg.getContext("2d").drawImage(video, 0, 0, 400, 180);
           this.gestureCards[gestureIndex].appendChild(gestureImg);
         }
 
-        // if 30 examples are trained, show check mark to the user 
+        // if 30 examples are trained, show check mark to the user
         if (exampleCount == 30) {
           this.checkMarks[gestureIndex].src = "Images//checkmark.svg";
           this.checkMarks[gestureIndex].classList.add("animated");
@@ -438,7 +462,7 @@ class Main {
     this.createVideoCallBtn(); // create video call button that displays on translate page
     this.createBackToTrainBtn(); // create back to train button that will go back to training page
 
-    this.predButton.addEventListener('click', () => {
+    this.predButton.addEventListener("click", () => {
       // Change the styling of video display and start prediction
       console.log("go to translate");
       const exampleCount = this.knn.getClassExampleCount();
@@ -447,7 +471,7 @@ class Main {
         this.video.style.display = "inline-block"; // turn on video from webscam in case it's off
 
         this.videoCall.style.display = "none"; // turn off video call in case it's on
-        this.videoCallBtn.style.display = "block";
+        this.videoCallBtn.style.display = "none";
 
         this.backToTrainButton.style.display = "block";
 
@@ -459,10 +483,10 @@ class Main {
         this.videoContainer.className = "videoContainerPredict";
         this.videoContainer.style.border = "8px solid black";
 
-
         // Update stage and instruction info
         this.stageTitle.innerText = "Traducir";
-        this.stageInstruction.innerText = "Comience a traducir con su gesto de inicio."
+        this.stageInstruction.innerText =
+          "Comience a traducir con su gesto de inicio.";
 
         // Remove training UI
         this.trainingContainer.style.display = "none";
@@ -475,9 +499,11 @@ class Main {
         // Start Translation
         this.setUpTranslation();
       } else {
-        alert('Aún no has agregado ningún ejemplo.\n\nMantén presionado el botón "Agregar ejemplo" junto a cada palabra mientras realizas la seña frente a la cámara web.');
+        alert(
+          'Aún no has agregado ningún ejemplo.\n\nMantén presionado el botón "Agregar ejemplo" junto a cada palabra mientras realizas la seña frente a la cámara web.'
+        );
       }
-    })
+    });
   }
 
   /*This function stops the training process and allows user's to copy text on the click of
@@ -500,28 +526,39 @@ class Main {
     this.elapsed = this.now - this.then;
 
     if (this.elapsed > this.fpsInterval) {
-      this.then = this.now - this.elapsed % this.fpsInterval;
+      this.then = this.now - (this.elapsed % this.fpsInterval);
       if (this.videoPlaying) {
         const exampleCount = this.knn.getClassExampleCount();
         const image = dl.fromPixels(this.video);
 
         if (Math.max(...exampleCount) > 0) {
-          this.knn.predictClass(image)
+          this.knn
+            .predictClass(image)
             .then((res) => {
               for (let i = 0; i < words.length; i++) {
                 /*if gesture matches this word & is above threshold & isn't same as prev prediction
                 and is not stop gesture, return that word to the user*/
-                if (res.classIndex == i && res.confidences[i] > confidenceThreshold && res.classIndex != this.previousPrediction) { //  && res.classIndex != 1) {
+                if (
+                  res.classIndex == i &&
+                  res.confidences[i] > confidenceThreshold &&
+                  res.classIndex != this.previousPrediction
+                ) {
+                  //  && res.classIndex != 1) {
                   this.setStatusText("Status: Predicting!", "predict");
 
                   // Send word to Prediction Output so it will display or speak out the word.
-                  this.predictionOutput.textOutput(words[i], this.gestureCards[i], res.confidences[i] * 100);
+                  this.predictionOutput.textOutput(
+                    words[i],
+                    this.gestureCards[i],
+                    res.confidences[i] * 100
+                  );
 
                   // set previous prediction so it doesnt get called again
                   this.previousPrediction = res.classIndex;
                 }
               }
-            }).then(() => image.dispose())
+            })
+            .then(() => image.dispose());
         } else {
           image.dispose();
         }
@@ -542,7 +579,7 @@ class Main {
 
   // if predict button is actually a back to training button, stop translation and recreate training UI
   createBackToTrainBtn() {
-    this.backToTrainButton.addEventListener('click', () => {
+    this.backToTrainButton.addEventListener("click", () => {
       main.pausePredicting();
 
       this.stageTitle.innerText = "Continuar entrenando ";
@@ -579,9 +616,10 @@ class Main {
   /*This function displays the button that start video call.*/
   createVideoCallBtn() {
     // Display video call feed instead of normal webcam feed when video call btn is clicked
-    videoCallBtn.addEventListener('click', () => {
+    videoCallBtn.addEventListener("click", () => {
       this.stageTitle.innerText = "Video Call";
-      this.stageInstruction.innerText = "Traduce gestos para hablar con personas en una videollamada";
+      this.stageInstruction.innerText =
+        "Traduce gestos para hablar con personas en una videollamada";
 
       this.video.style.display = "none";
       this.videoContainer.style.borderStyle = "none";
@@ -596,10 +634,11 @@ class Main {
       this.predButton.style.display = "block";
 
       this.setStatusText("Status: Video Call Activated");
-    })
+    });
   }
   /*This function sets the status text*/
-  setStatusText(status, type) { //make default type thing
+  setStatusText(status, type) {
+    //make default type thing
     this.statusContainer.style.display = "block";
     this.statusText.innerText = status;
     if (type == "copy") {
@@ -636,7 +675,7 @@ class PredictionOutput {
     this.waitTimeForQuery = 10000;
 
     this.synth.onvoiceschanged = () => {
-      this.populateVoiceList()
+      this.populateVoiceList();
     };
 
     //Set up copy translation event listener
@@ -645,21 +684,25 @@ class PredictionOutput {
 
   // Checks if speech synthesis is possible and if selected voice is available
   populateVoiceList() {
-    if (typeof speechSynthesis === 'undefined') {
+    if (typeof speechSynthesis === "undefined") {
       console.log("no synth");
       return;
     }
     this.voices = this.synth.getVoices();
 
     if (this.voices.indexOf(this.selectedVoice) > 0) {
-      console.log(this.voices[this.selectedVoice].name + ':' + this.voices[this.selectedVoice].lang);
+      console.log(
+        this.voices[this.selectedVoice].name +
+          ":" +
+          this.voices[this.selectedVoice].lang
+      );
     }
   }
 
   /*This function outputs the word using text and gesture cards*/
   textOutput(word, gestureCard, gestureAccuracy) {
     // If the word is start, clear translated text content
-    if (word == 'start') {
+    if (word == "start") {
       this.clearPara();
 
       setTimeout(() => {
@@ -671,7 +714,7 @@ class PredictionOutput {
     }
 
     // If first word is not start, return
-    if (word != 'start' && this.currentPredictedWords.length == 0) {
+    if (word != "start" && this.currentPredictedWords.length == 0) {
       return;
     }
 
@@ -685,11 +728,11 @@ class PredictionOutput {
 
     // Depending on the word, display the text output
     if (word == "start") {
-      this.translationText.innerText += ' ';
+      this.translationText.innerText += " ";
     } else if (word == "stop") {
-      this.translationText.innerText += '.';
+      this.translationText.innerText += ".";
     } else {
-      this.translationText.innerText += ' ' + word;
+      this.translationText.innerText += " " + word;
     }
 
     //Clone Gesture Card
@@ -704,7 +747,9 @@ class PredictionOutput {
 
     var gestureImg = document.createElement("canvas");
     gestureImg.className = "trained_image";
-    gestureImg.getContext('2d').drawImage(gestureCard.childNodes[1], 0, 0, 400, 180);
+    gestureImg
+      .getContext("2d")
+      .drawImage(gestureCard.childNodes[1], 0, 0, 400, 180);
     clonedCard.appendChild(gestureImg);
 
     var gestAccuracy = document.createElement("h7");
@@ -721,7 +766,7 @@ class PredictionOutput {
 
   /*This functions clears translation text and cards. Sets the previous predicted words to null*/
   clearPara() {
-    this.translationText.innerText = '';
+    this.translationText.innerText = "";
     main.previousPrediction = -1;
     this.currentPredictedWords = []; // empty words in this query
     this.translatedCard.innerHTML = " ";
@@ -730,24 +775,23 @@ class PredictionOutput {
   /*The function below is adapted from https://stackoverflow.com/questions/45071353/javascript-copy-text-string-on-click/53977796#53977796
   It copies the translated text to the user's clipboard*/
   copyTranslation() {
-    this.translationHolder.addEventListener('mousedown', () => {
+    this.translationHolder.addEventListener("mousedown", () => {
       main.setStatusText("Text Copied!", "copy");
-      const el = document.createElement('textarea'); // Create a <textarea> element
+      const el = document.createElement("textarea"); // Create a <textarea> element
       el.value = this.translationText.innerText; // Set its value to the string that you want copied
-      el.setAttribute('readonly', ''); // Make it readonly to be tamper-proof
-      el.style.position = 'absolute';
-      el.style.left = '-9999px'; // Move outside the screen to make it invisible
+      el.setAttribute("readonly", ""); // Make it readonly to be tamper-proof
+      el.style.position = "absolute";
+      el.style.left = "-9999px"; // Move outside the screen to make it invisible
       document.body.appendChild(el); // Append the <textarea> element to the HTML document
       const selected =
         document.getSelection().rangeCount > 0 // Check if there is any content selected previously
-        ?
-        document.getSelection().getRangeAt(0) // Store selection if found
-        :
-        false; // Mark as false to know no selection existed before
+          ? document.getSelection().getRangeAt(0) // Store selection if found
+          : false; // Mark as false to know no selection existed before
       el.select(); // Select the <textarea> content
-      document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+      document.execCommand("copy"); // Copy - only works as a result of a user action (e.g. click events)
       document.body.removeChild(el); // Remove the <textarea> element
-      if (selected) { // If a selection existed before copying
+      if (selected) {
+        // If a selection existed before copying
         document.getSelection().removeAllRanges(); // Unselect everything on the HTML document
         document.getSelection().addRange(selected); // Restore the original selection
       }
@@ -774,6 +818,6 @@ class PredictionOutput {
 var main = null;
 
 //Initializes the main class on window load
-window.addEventListener('load', () => {
-  main = new Main()
+window.addEventListener("load", () => {
+  main = new Main();
 });
