@@ -144,19 +144,19 @@ class Main {
       if (Math.max(...exampleCount) > 0) {
         // if start gesture has not been trained
         if (exampleCount[0] == 0) {
-          alert('You haven\'t added examples for the Start Gesture');
+          alert('No has añadido ejemplos para el gesto de inicio');
           return;
         }
 
         // if stop gesture has not been trained
         if (exampleCount[1] == 0) {
-          alert('You haven\'t added examples for the Stop Gesture.\n\nCapture yourself in idle states e.g hands by your side, empty background etc.');
+          alert('No has agregado ejemplos para el gesto de detenerse.\n\nCaptúrate a ti mismo en estados inactivos, por ejemplo, con las manos a los costados, fondo vacío, etc..');
           return;
         }
 
         this.nextButton.style.display = "none";
-        this.stageTitle.innerText = "Continue Training";
-        this.stageInstruction.innerText = "Add Gesture Name and Train.";
+        this.stageTitle.innerText = "Continua entrenando";
+        this.stageInstruction.innerText = "Agrega nombre del gesto y Entrena.";
 
         //Start custom gesture training process
         this.setupTrainingUI();
@@ -193,7 +193,7 @@ class Main {
       this.knn.clearClass(i);
       this.exampleCountDisplay[i].innerText = " 0 examples";
       this.gestureCards[i].removeChild(this.gestureCards[i].childNodes[1]);
-      this.checkMarks[i].src = "Images\\loader.gif";
+      this.checkMarks[i].src = "Images\\cargando.gif";
     });
 
     // Variables for training information for the user
@@ -216,7 +216,7 @@ class Main {
     this.trainedCardsHolder.appendChild(gestureCard);
 
     exampleCountDisplay.innerText = " 0 examples";
-    checkMark.src = 'Images\\loader.gif';
+    checkMark.src = 'Images\\cargando.gif';
     this.exampleCountDisplay.push(exampleCountDisplay);
     this.checkMarks.push(checkMark);
     this.gestureCards.push(gestureCard);
@@ -229,13 +229,13 @@ class Main {
     if (Math.max(...exampleCount) > 0) {
       // if start gesture has not been trained
       if (exampleCount[0] == 0) {
-        alert('You haven\'t added examples for the wake word');
+        alert('No has añadido ejemplos para la palabra de activación.');
         return;
       }
 
       // if stop gesture has not been trained
       if (exampleCount[1] == 0) {
-        alert('You haven\'t added examples for the Stop Gesture.\n\nCapture yourself in idle states e.g hands by your side, empty background etc.');
+        alert('No has agregado ejemplos para el gesto de detenerse.\n\nCaptúrate a ti mismo en estados inactivos, por ejemplo, con las manos a los costados, fondo vacío, etc.');
         return;
       }
 
@@ -271,12 +271,12 @@ class Main {
           this.initializeTraining();
           this.createTranslateBtn();
         } else {
-          alert("Duplicate word or no word entered");
+          alert("Palabra duplicada o ninguna palabra ingresada");
         }
         return;
       });
     } else {
-      alert('You haven\'t added any examples yet.\n\nAdd a Gesture, then perform the sign in front of the webcam.');
+      alert('Aún no has agregado ningún ejemplo.\n\nAgrega un gesto y luego realiza la señal frente a la cámara web.');
     }
   }
 
@@ -304,7 +304,7 @@ class Main {
       this.knn.clearClass(i);
       this.exampleCountDisplay[i].innerText = " 0 examples";
       this.gestureCards[i].removeChild(this.gestureCards[i].childNodes[1]);
-      this.checkMarks[i].src = 'Images\\loader.gif';
+      this.checkMarks[i].src = 'Images\\cargando.gif';
     });
 
     // Create elements to display training information for the user
@@ -327,7 +327,7 @@ class Main {
     this.trainedCardsHolder.appendChild(gestureCard);
 
     exampleCountDisplay.innerText = " 0 examples";
-    checkMark.src = 'Images\\loader.gif';
+    checkMark.src = 'Images\\cargando.gif';
     this.exampleCountDisplay.push(exampleCountDisplay);
     this.checkMarks.push(checkMark);
     this.gestureCards.push(gestureCard);
@@ -461,8 +461,8 @@ class Main {
 
 
         // Update stage and instruction info
-        this.stageTitle.innerText = "Translate";
-        this.stageInstruction.innerText = "Start Translating with your Start Gesture.";
+        this.stageTitle.innerText = "Traducir";
+        this.stageInstruction.innerText = "Comience a traducir con su gesto de inicio."
 
         // Remove training UI
         this.trainingContainer.style.display = "none";
@@ -475,7 +475,7 @@ class Main {
         // Start Translation
         this.setUpTranslation();
       } else {
-        alert('You haven\'t added any examples yet.\n\nPress and hold on the "Add Example" button next to each word while performing the sign in front of the webcam.');
+        alert('Aún no has agregado ningún ejemplo.\n\nMantén presionado el botón "Agregar ejemplo" junto a cada palabra mientras realizas la seña frente a la cámara web.');
       }
     })
   }
@@ -489,7 +489,7 @@ class Main {
     }
 
     // Set status to predict, call copy translated text listener and start prediction
-    this.setStatusText("Status: Ready to Predict!", "predict");
+    this.setStatusText("Status: Listo para predecir !", "predict");
     this.video.play();
     this.pred = requestAnimationFrame(this.predict.bind(this));
   }
@@ -545,10 +545,10 @@ class Main {
     this.backToTrainButton.addEventListener('click', () => {
       main.pausePredicting();
 
-      this.stageTitle.innerText = "Continue Training";
-      this.stageInstruction.innerText = "Add Gesture Name and Train.";
+      this.stageTitle.innerText = "Continuar entrenando ";
+      this.stageInstruction.innerText = "Agrega gesto y nombre y continua ent.";
 
-      this.predButton.innerText = "Translate";
+      this.predButton.innerText = "Traducir";
       this.predButton.style.display = "block";
       this.backToTrainButton.style.display = "none";
       this.statusContainer.style.display = "none";
@@ -581,7 +581,7 @@ class Main {
     // Display video call feed instead of normal webcam feed when video call btn is clicked
     videoCallBtn.addEventListener('click', () => {
       this.stageTitle.innerText = "Video Call";
-      this.stageInstruction.innerText = "Translate Gestures to talk to people on Video Call";
+      this.stageInstruction.innerText = "Traduce gestos para hablar con personas en una videollamada";
 
       this.video.style.display = "none";
       this.videoContainer.style.borderStyle = "none";
@@ -592,7 +592,7 @@ class Main {
       this.videoCall.style.display = "block";
       this.videoCallBtn.style.display = "none";
       this.backToTrainButton.style.display = "none";
-      this.predButton.innerText = "Local Translation";
+      this.predButton.innerText = "Traslacion Local";
       this.predButton.style.display = "block";
 
       this.setStatusText("Status: Video Call Activated");
